@@ -46,6 +46,28 @@ def test_synthetic_round_trip():
     assert info["rmse_final"] < info["rmse_init"]
     assert "saturation" in fitted and abs(fitted["saturation"] - 0.8) < 0.1
     assert "vignette" in fitted and abs(fitted["vignette"]["amount"] - 0.3) < 0.1
+    # luminance-only grade: channels agree -> collapsed to a single shared curve
+    assert isinstance(fitted["tone_curve"], list)
+
+
+def test_color_cast_round_trip():
+    # A vintage-style cast: red blacks lifted, blue channel crushed. A single
+    # shared curve cannot represent this; the per-channel fit must.
+    torch.manual_seed(6)
+    img = torch.rand(1, 128, 128, 3)
+    preset = {
+        "tone_curve": {
+            "R": [[0, 35], [128, 140], [255, 250]],
+            "G": [[0, 25], [128, 130], [255, 246]],
+            "B": [[0, -25], [128, 70], [255, 240]],
+        },
+        "saturation": 0.75,
+    }
+    target = grading.apply_preset(img, preset)
+    fitted, info = fitting.fit_preset(img, target, iterations=800, fit_vignette=False)
+    assert info["rmse_final"] < 2.0, f"RMSE {info['rmse_final']:.2f}/255"
+    assert isinstance(fitted["tone_curve"], dict), "cast requires per-channel curves"
+    assert abs(fitted["saturation"] - 0.75) < 0.1
 
 
 @pytest.mark.skipif(
@@ -76,8 +98,9 @@ def test_tone_curve_monotonicity():
     torch.manual_seed(2)
     img = torch.rand(1, 96, 96, 3)
     _, info = fitting.fit_preset(img, 1.0 - img, iterations=300, fit_vignette=False)
-    ys = info["curve_ys"]
-    assert all(b >= a - 1e-6 for a, b in zip(ys, ys[1:])), f"non-monotonic curve: {ys}"
+    for ch, ys in info["curve_ys"].items():
+        assert all(b >= a - 1e-6 for a, b in zip(ys, ys[1:])), \
+            f"non-monotonic {ch} curve: {ys}"
 
 
 def test_different_resolutions_target_resampled():

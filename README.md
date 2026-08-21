@@ -38,8 +38,11 @@ the image passes through unchanged (the workflow never crashes).
 
 Connect `image_source` (ungraded) and `image_target` (the same image, graded);
 the node fits by gradient descent (Adam, pure torch, CPU or GPU) a 6-point
-tone curve, temperature/tint, saturation and an optional vignette, then
-estimates grain from the residual high-frequency noise.
+tone curve **per RGB channel**, saturation and an optional vignette, then
+estimates grain from the residual high-frequency noise. Per-channel curves
+capture color casts — e.g. a vintage look that lifts red blacks while
+crushing the blue channel; when the three fitted curves agree, they are
+collapsed into a single shared curve in the written preset.
 
 - **preset_name** — the `"name"` stored in the JSON; the file itself is
   written under a slugified version of it (`My Look!` → `my_look.json`).
@@ -96,6 +99,10 @@ the [grading.py](grading.py) docstring. Minimal example
   "strength": 1.0
 }
 ```
+
+`"tone_curve"` accepts either a single list of points (applied to all
+channels) or a per-channel form `{"R": [...], "G": [...], "B": [...]}`;
+out values may go below 0 / above 255 to crush or clip a channel.
 
 `.cube` LUTs referenced by a `"lut"` field are looked up in `presets/luts/`.
 

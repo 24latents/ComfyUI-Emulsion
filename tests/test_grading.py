@@ -78,6 +78,24 @@ def test_operation_active_and_bounded(img, name):
     assert not torch.allclose(out, img), f"{name} has no effect"
 
 
+def test_tone_curve_per_channel(img):
+    # dict form with identical curves == list form
+    pts = [[0, 20], [128, 110], [255, 235]]
+    shared = G.apply_preset(img, {"tone_curve": pts})
+    as_dict = G.apply_preset(img, {"tone_curve": {"R": pts, "G": pts, "B": pts}})
+    assert torch.allclose(shared, as_dict, atol=1e-6)
+
+    # per-channel: lift red blacks, crush blue — channels must diverge
+    out = G.apply_preset(img, {"tone_curve": {
+        "R": [[0, 40], [255, 250]],
+        "B": [[0, -30], [128, 60], [255, 245]],
+    }})
+    assert out.min() >= 0 and out.max() <= 1
+    assert out[..., 0].min() >= 40 / 255 - 1e-4, "red blacks must be lifted"
+    assert torch.allclose(out[..., 1], img[..., 1])  # G absent from dict -> untouched
+    assert out[..., 2].mean() < img[..., 2].mean(), "blue must be crushed"
+
+
 def test_strength_lerp(img):
     p = {"contrast": 1.5}
     full = G.apply_preset(img, p)

@@ -5,25 +5,31 @@ device of the input tensors (CPU or GPU).
 
 The fit optimizes (Adam, lr ~0.02 with decay), in the order of the
 grading.py pipeline:
-  1. tone_curve: 6 points with FIXED x positions [0, 51, 102, 153, 204, 255],
-     only the y values move, reparametrized as a cumulative sum of softplus
-     to guarantee monotonicity (no point crossing possible).
-  2. temperature, tint (init 0)
-  3. saturation (init 1)
-  4. optional vignette: amount, radius, feather (shape "circle" and
-     curve 1.0 fixed; init amount 0)
+  1. tone_curve: one 6-point curve PER RGB CHANNEL, with FIXED x positions
+     [0, 51, 102, 153, 204, 255]; only the y values move, reparametrized as
+     a cumulative sum of softplus to guarantee monotonicity (no point
+     crossing possible). Per-channel curves capture color casts — e.g. a
+     vintage look that lifts red blacks while crushing the blue channel —
+     that a single shared curve cannot represent. When the three fitted
+     curves agree, they are collapsed into a single shared curve in the
+     written preset. Global temperature/tint gains are not fitted
+     separately: they are multiplicative per-channel maps, which the
+     per-channel curves represent exactly.
+  2. saturation (init 1) — mixes channels, not representable by curves.
+  3. optional vignette: amount, radius, feather (shape "circle" and
+     curve 1.0 fixed; init amount 0) — spatial, not representable by curves.
 
-During the fit, the curve is evaluated with piecewise LINEAR interpolation
+During the fit, curves are evaluated with piecewise linear interpolation
 (torch.searchsorted, differentiable): the Catmull-Rom in grading.py rebuilds
 its LUT in pure Python and is not differentiable. The written preset contains
 the points, and grading.py's spline applies them at render time; the
 linear-fit / spline-render gap is on the order of the fit noise (documented
-in the README).
+in the README). Fitted y values may go below 0 or above 255 — that is how a
+crushed or clipped channel is represented (the render clamps).
 
-temperature/tint and vignette are differentiable mirrors of the grading.py
-formulas: apply_temperature_tint rebuilds its gains via torch.tensor()
-(breaks the gradient) and apply_vignette short-circuits at amount == 0
-(zero gradient at init). apply_saturation is reused as is.
+The vignette is a differentiable mirror of the grading.py formula:
+apply_vignette short-circuits at amount == 0 (zero gradient at init).
+apply_saturation is reused as is.
 
 Grain is NOT fitted (stochastic): after convergence, estimate_grain compares
 the residual high-frequency noise (std of the residual after a gaussian blur
@@ -45,10 +51,11 @@ except ImportError:  # direct import outside the package (tests)
 logger = logging.getLogger("ComfyUI-Emulsion")
 
 CURVE_XS = (0.0, 51.0, 102.0, 153.0, 204.0, 255.0)  # fixed x positions, 0-255
+CHANNELS = "RGB"
 
 # Thresholds below which a parameter is considered neutral and omitted
-TOL_CURVE = 1.0      # max deviation from identity, in 0-255 units
-TOL_TEMP_TINT = 0.5
+TOL_CURVE = 1.0        # max deviation from identity, in 0-255 units
+CURVE_CHANNEL_TOL = 2.0  # max spread between channels to collapse to one curve
 TOL_SAT = 0.01
 TOL_VIGNETTE = 0.01
 GRAIN_THRESHOLD = 0.002  # high-frequency std gap that triggers grain
@@ -81,14 +88,6 @@ def apply_linear_curve(img: torch.Tensor, xs: torch.Tensor, ys: torch.Tensor) ->
     y0, y1 = ys[idx - 1], ys[idx]
     t = (x - x0) / (x1 - x0)
     return y0 + (y1 - y0) * t
-
-
-def _temp_tint(img: torch.Tensor, temperature: torch.Tensor, tint: torch.Tensor) -> torch.Tensor:
-    """Same formula as grading.apply_temperature_tint, gradient preserved."""
-    t = temperature / 100.0 * 0.3
-    g = tint / 100.0 * 0.3
-    gains = torch.stack([1.0 + t, 1.0 - g * 0.5, 1.0 - t])
-    return img * gains
 
 
 def _vignette_radius_grid(h: int, w: int, device, dtype) -> torch.Tensor:
@@ -151,7 +150,8 @@ def fit_preset(source: torch.Tensor, target: torch.Tensor,
     resampled to the source resolution.
     Returns (preset, info): preset only contains the significantly
     non-neutral fields; info = rmse_init / rmse_final (/255, measured at the
-    source's native resolution), iterations_run, curve_ys (0-255), etc.
+    source's native resolution), iterations_run, curve_ys (0-255 per
+    channel), etc.
     """
     # ComfyUI runs nodes under torch.inference_mode(), where autograd is
     # disabled: exit it explicitly, and clone the inputs in _fit because
@@ -198,11 +198,10 @@ def _fit(source, target, iterations, fit_vignette, lr, max_side):
     xs = torch.tensor([x / 255.0 for x in CURVE_XS], device=device, dtype=dtype)
     r_grid = _vignette_radius_grid(h, w, device, dtype)
 
-    curve_raw = _curve_raw_identity(device, dtype).requires_grad_(True)
-    temp = torch.zeros((), device=device, dtype=dtype, requires_grad=True)
-    tint = torch.zeros((), device=device, dtype=dtype, requires_grad=True)
+    curve_raws = [_curve_raw_identity(device, dtype).requires_grad_(True)
+                  for _ in CHANNELS]
     sat = torch.ones((), device=device, dtype=dtype, requires_grad=True)
-    params = [curve_raw, temp, tint, sat]
+    params = curve_raws + [sat]
     if fit_vignette:
         vig_amount = torch.zeros((), device=device, dtype=dtype, requires_grad=True)
         vig_radius = torch.full((), 0.7, device=device, dtype=dtype, requires_grad=True)
@@ -218,8 +217,9 @@ def _fit(source, target, iterations, fit_vignette, lr, max_side):
     iterations_run = 0
     for i in range(iterations):
         opt.zero_grad()
-        x = apply_linear_curve(src_s, xs, curve_ys_from_raw(curve_raw))
-        x = _temp_tint(x, temp, tint)
+        x = torch.stack(
+            [apply_linear_curve(src_s[..., c], xs, curve_ys_from_raw(curve_raws[c]))
+             for c in range(len(CHANNELS))], dim=-1)
         x = grading.apply_saturation(x, sat)
         if fit_vignette:
             x = _vignette(x, r_grid, vig_amount, vig_radius,
@@ -237,16 +237,27 @@ def _fit(source, target, iterations, fit_vignette, lr, max_side):
             break
 
     with torch.no_grad():
-        ys255 = [min(max(y * 255.0, 0.0), 255.0)
-                 for y in curve_ys_from_raw(curve_raw).tolist()]
+        ys_by_ch = {ch: [y * 255.0 for y in curve_ys_from_raw(raw).tolist()]
+                    for ch, raw in zip(CHANNELS, curve_raws)}
 
         preset = {}
-        if max(abs(y - x) for x, y in zip(CURVE_XS, ys255)) > TOL_CURVE:
-            preset["tone_curve"] = [[x, round(y, 2)] for x, y in zip(CURVE_XS, ys255)]
-        if abs(temp.item()) > TOL_TEMP_TINT:
-            preset["temperature"] = round(temp.item(), 2)
-        if abs(tint.item()) > TOL_TEMP_TINT:
-            preset["tint"] = round(tint.item(), 2)
+        spread = max(
+            max(ys_by_ch[ch][i] for ch in CHANNELS)
+            - min(ys_by_ch[ch][i] for ch in CHANNELS)
+            for i in range(len(CURVE_XS))
+        )
+        if spread <= CURVE_CHANNEL_TOL:
+            # channels agree: collapse to a single shared curve
+            mean_ys = [sum(ys_by_ch[ch][i] for ch in CHANNELS) / len(CHANNELS)
+                       for i in range(len(CURVE_XS))]
+            if max(abs(y - x) for x, y in zip(CURVE_XS, mean_ys)) > TOL_CURVE:
+                preset["tone_curve"] = [[x, round(y, 2)]
+                                        for x, y in zip(CURVE_XS, mean_ys)]
+        else:
+            preset["tone_curve"] = {
+                ch: [[x, round(y, 2)] for x, y in zip(CURVE_XS, ys_by_ch[ch])]
+                for ch in CHANNELS
+            }
         if abs(sat.item() - 1.0) > TOL_SAT:
             preset["saturation"] = round(sat.item(), 3)
         if fit_vignette and abs(vig_amount.item()) > TOL_VIGNETTE:
@@ -272,9 +283,7 @@ def _fit(source, target, iterations, fit_vignette, lr, max_side):
         "rmse_final": rmse_final,
         "target_resized": target_resized,
         "iterations_run": iterations_run,
-        "curve_ys": [round(y, 3) for y in ys255],
-        "temperature": temp.item(),
-        "tint": tint.item(),
+        "curve_ys": {ch: [round(y, 3) for y in ys] for ch, ys in ys_by_ch.items()},
         "saturation": sat.item(),
     }
     return preset, info

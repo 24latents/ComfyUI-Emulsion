@@ -19,7 +19,11 @@ Full JSON schema:
     "input_black": 0, "input_white": 255, "gamma": 1.0,
     "output_black": 0, "output_white": 255
   },
-  "tone_curve": [[0,0],[128,128],[255,255]],   # (in,out) points 0-255, Catmull-Rom
+  "tone_curve": [[0,0],[128,128],[255,255]],   # (in,out) points 0-255, Catmull-Rom;
+                                                # either flat (RGB) or per channel
+                                                # {"R": [...], "G": [...], "B": [...]};
+                                                # out values may go below 0 / above 255
+                                                # to crush or clip a channel
   "brightness": 0.0,                            # additive, -1..1
   "contrast": 1.0, "contrast_pivot": 0.5,
   "temperature": 0.0, "tint": 0.0,              # -100..100
@@ -169,6 +173,15 @@ def _catmull_rom_lut(points, n=1024, device=None, dtype=None) -> torch.Tensor:
     return ys.clamp(0, 1).to(device=device, dtype=dtype)
 
 def apply_tone_curve(img: torch.Tensor, points) -> torch.Tensor:
+    """Shared curve (list of points) or per channel via R/G/B keys."""
+    if isinstance(points, dict):
+        out = img.clone()
+        for i, ch in enumerate("RGB"):
+            if ch in points:
+                lut = _catmull_rom_lut(points[ch], device=img.device, dtype=img.dtype)
+                idx = (img[..., i].clamp(0, 1) * (lut.numel() - 1)).round().long()
+                out[..., i] = lut[idx]
+        return out
     lut = _catmull_rom_lut(points, device=img.device, dtype=img.dtype)
     idx = (img.clamp(0, 1) * (lut.numel() - 1)).round().long()
     return lut[idx]

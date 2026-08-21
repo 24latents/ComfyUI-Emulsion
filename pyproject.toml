@@ -1,7 +1,7 @@
 [project]
 name = "comfyui-emulsion"
 description = "JSON-preset color grading for ComfyUI (Lightroom-preset style) — replaces a chain of post-processing nodes with a single node, plus a preset extraction node."
-version = "0.1.0"
+version = "0.2.0"
 license = { file = "LICENSE" }
 dependencies = []
 
