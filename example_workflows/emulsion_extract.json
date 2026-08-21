@@ -149,7 +149,7 @@
         "Node name for S&R": "Display Any (rgthree)"
       },
       "widgets_values": [
-        "{\n  \"name\": \"Vintage\",\n  \"description\": \"Extrait par Emulsion Extract le 2026-08-21 — RMSE 15.30/255\",\n  \"tone_curve\": [\n    [\n      0.0,\n      10.04\n    ],\n    [\n      51.0,\n      42.02\n    ],\n    [\n      102.0,\n      83.61\n    ],\n    [\n      153.0,\n      140.17\n    ],\n    [\n      204.0,\n      201.43\n    ],\n    [\n      255.0,\n      246.75\n    ]\n  ],\n  \"temperature\": 3.16,\n  \"tint\": -2.1,\n  \"saturation\": 1.143,\n  \"vignette\": {\n    \"amount\": -0.058,\n    \"shape\": \"circle\",\n    \"radius\": 0.992,\n    \"feather\": 0.614,\n    \"curve\": 1.0\n  },\n  \"grain\": {\n    \"amount\": 0.0097,\n    \"mono\": true\n  }\n}"
+        "{\n  \"name\": \"Vintage\",\n  \"description\": \"Extracted by Emulsion Extract on 2026-08-21 — RMSE 15.30/255\",\n  \"tone_curve\": [\n    [\n      0.0,\n      10.04\n    ],\n    [\n      51.0,\n      42.02\n    ],\n    [\n      102.0,\n      83.61\n    ],\n    [\n      153.0,\n      140.17\n    ],\n    [\n      204.0,\n      201.43\n    ],\n    [\n      255.0,\n      246.75\n    ]\n  ],\n  \"temperature\": 3.16,\n  \"tint\": -2.1,\n  \"saturation\": 1.143,\n  \"vignette\": {\n    \"amount\": -0.058,\n    \"shape\": \"circle\",\n    \"radius\": 0.992,\n    \"feather\": 0.614,\n    \"curve\": 1.0\n  },\n  \"grain\": {\n    \"amount\": 0.0097,\n    \"mono\": true\n  }\n}"
       ]
     }
   ],
