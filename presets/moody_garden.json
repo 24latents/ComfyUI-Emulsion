@@ -1,0 +1,10 @@
+{
+  "name": "Moody Garden",
+  "description": "Soft fade: lifted blacks, compressed highlights, midtone contrast, slight desaturation",
+  "levels": {"input_black": 57, "input_white": 217, "gamma": 1.04,
+             "output_black": 38, "output_white": 210},
+  "contrast": 1.15, "contrast_pivot": 0.5,
+  "saturation": 0.96,
+  "grain": {"amount": 0.008, "size": 1.0, "mono": true},
+  "strength": 1.0
+}

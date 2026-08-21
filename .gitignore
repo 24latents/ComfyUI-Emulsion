@@ -1,0 +1,9 @@
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Reference images for the regression tests (local, ~5 MB;
+# the affected tests are skipped when they are absent)
+tests/A.png
+tests/B.PNG

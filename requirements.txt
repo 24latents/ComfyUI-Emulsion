@@ -1,0 +1,1 @@
+# Aucune dépendance : torch est déjà fourni par ComfyUI.

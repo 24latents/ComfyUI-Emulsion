@@ -1,0 +1,44 @@
+{
+  "name": "Kodak Ektachrome 400X",
+  "description": "Extracted by Emulsion Extract on 2026-08-20 — RMSE 9.23/255",
+  "tone_curve": [
+    [
+      0.0,
+      0.57
+    ],
+    [
+      51.0,
+      44.15
+    ],
+    [
+      102.0,
+      103.5
+    ],
+    [
+      153.0,
+      165.36
+    ],
+    [
+      204.0,
+      219.16
+    ],
+    [
+      255.0,
+      255.0
+    ]
+  ],
+  "temperature": -2.45,
+  "tint": -1.92,
+  "saturation": 0.741,
+  "vignette": {
+    "amount": 0.022,
+    "shape": "circle",
+    "radius": 0.092,
+    "feather": 0.329,
+    "curve": 1.0
+  },
+  "grain": {
+    "amount": 0.0335,
+    "mono": true
+  }
+}

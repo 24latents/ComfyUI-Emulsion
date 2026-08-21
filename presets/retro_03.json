@@ -1,0 +1,40 @@
+{
+  "name": "Retro 03",
+  "description": "Extracted by Emulsion Extract on 2026-08-20 — RMSE 10.42/255",
+  "tone_curve": [
+    [
+      0.0,
+      14.41
+    ],
+    [
+      51.0,
+      57.02
+    ],
+    [
+      102.0,
+      115.5
+    ],
+    [
+      153.0,
+      162.32
+    ],
+    [
+      204.0,
+      206.3
+    ],
+    [
+      255.0,
+      244.63
+    ]
+  ],
+  "temperature": -3.05,
+  "tint": 1.4,
+  "saturation": 1.117,
+  "vignette": {
+    "amount": 0.089,
+    "shape": "circle",
+    "radius": 0.952,
+    "feather": 0.601,
+    "curve": 1.0
+  }
+}

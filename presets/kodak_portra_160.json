@@ -1,0 +1,44 @@
+{
+  "name": "Kodak Portra 160",
+  "description": "Extracted by Emulsion Extract on 2026-08-20 — RMSE 4.12/255",
+  "tone_curve": [
+    [
+      0.0,
+      0.0
+    ],
+    [
+      51.0,
+      51.33
+    ],
+    [
+      102.0,
+      125.85
+    ],
+    [
+      153.0,
+      168.33
+    ],
+    [
+      204.0,
+      203.56
+    ],
+    [
+      255.0,
+      249.84
+    ]
+  ],
+  "temperature": 1.92,
+  "tint": -2.21,
+  "saturation": 1.016,
+  "vignette": {
+    "amount": 0.077,
+    "shape": "circle",
+    "radius": 0.984,
+    "feather": 0.686,
+    "curve": 1.0
+  },
+  "grain": {
+    "amount": 0.0058,
+    "mono": true
+  }
+}

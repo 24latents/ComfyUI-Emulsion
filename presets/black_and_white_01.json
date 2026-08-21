@@ -1,0 +1,43 @@
+{
+  "name": "Black and White 01",
+  "description": "Extracted by Emulsion Extract on 2026-08-20 — RMSE 6.85/255",
+  "tone_curve": [
+    [
+      0.0,
+      0.0
+    ],
+    [
+      51.0,
+      41.65
+    ],
+    [
+      102.0,
+      123.53
+    ],
+    [
+      153.0,
+      192.04
+    ],
+    [
+      204.0,
+      237.45
+    ],
+    [
+      255.0,
+      255.0
+    ]
+  ],
+  "temperature": -0.64,
+  "saturation": -0.003,
+  "vignette": {
+    "amount": 0.071,
+    "shape": "circle",
+    "radius": 0.464,
+    "feather": 0.61,
+    "curve": 1.0
+  },
+  "grain": {
+    "amount": 0.0212,
+    "mono": true
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "name": "Black and White 02",
+  "description": "Extracted by Emulsion Extract on 2026-08-20 — RMSE 4.27/255",
+  "tone_curve": [
+    [
+      0.0,
+      12.25
+    ],
+    [
+      51.0,
+      40.63
+    ],
+    [
+      102.0,
+      82.59
+    ],
+    [
+      153.0,
+      166.77
+    ],
+    [
+      204.0,
+      231.03
+    ],
+    [
+      255.0,
+      245.51
+    ]
+  ],
+  "temperature": -0.63,
+  "saturation": -0.0
+}
