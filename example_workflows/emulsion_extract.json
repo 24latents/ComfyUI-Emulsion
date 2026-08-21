@@ -1,0 +1,195 @@
+{
+  "id": "1a92129a-2c2c-43d7-a1c2-3b4386cff525",
+  "revision": 0,
+  "last_node_id": 7,
+  "last_link_id": 13,
+  "nodes": [
+    {
+      "id": 2,
+      "type": "LoadImage",
+      "pos": [
+        888.260995752252,
+        -302.5589826126432
+      ],
+      "size": [
+        282.798828125,
+        314
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            12
+          ]
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": null
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "LoadImage"
+      },
+      "widgets_values": [
+        "Base.png",
+        "image"
+      ]
+    },
+    {
+      "id": 3,
+      "type": "LoadImage",
+      "pos": [
+        888.4170959025746,
+        68.70417641558734
+      ],
+      "size": [
+        282.798828125,
+        314
+      ],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            10
+          ]
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": null
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "LoadImage"
+      },
+      "widgets_values": [
+        "Vintage.PNG",
+        "image"
+      ]
+    },
+    {
+      "id": 1,
+      "type": "EmulsionExtract",
+      "pos": [
+        1232.1455510227559,
+        -309.41893995226906
+      ],
+      "size": [
+        311.4673226853097,
+        127.88487830387771
+      ],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image_source",
+          "type": "IMAGE",
+          "link": 12
+        },
+        {
+          "name": "image_target",
+          "type": "IMAGE",
+          "link": 10
+        }
+      ],
+      "outputs": [
+        {
+          "name": "STRING",
+          "type": "STRING",
+          "links": [
+            3
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "EmulsionExtract"
+      },
+      "widgets_values": [
+        "Vintage",
+        400,
+        true
+      ]
+    },
+    {
+      "id": 4,
+      "type": "Display Any (rgthree)",
+      "pos": [
+        1231.9927077553427,
+        -137.77392313739028
+      ],
+      "size": [
+        503.50045332336697,
+        526.0449997106077
+      ],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [
+        {
+          "dir": 3,
+          "name": "source",
+          "type": "*",
+          "link": 3
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "Display Any (rgthree)"
+      },
+      "widgets_values": [
+        "{\n  \"name\": \"Vintage\",\n  \"description\": \"Extrait par Emulsion Extract le 2026-08-21 — RMSE 15.30/255\",\n  \"tone_curve\": [\n    [\n      0.0,\n      10.04\n    ],\n    [\n      51.0,\n      42.02\n    ],\n    [\n      102.0,\n      83.61\n    ],\n    [\n      153.0,\n      140.17\n    ],\n    [\n      204.0,\n      201.43\n    ],\n    [\n      255.0,\n      246.75\n    ]\n  ],\n  \"temperature\": 3.16,\n  \"tint\": -2.1,\n  \"saturation\": 1.143,\n  \"vignette\": {\n    \"amount\": -0.058,\n    \"shape\": \"circle\",\n    \"radius\": 0.992,\n    \"feather\": 0.614,\n    \"curve\": 1.0\n  },\n  \"grain\": {\n    \"amount\": 0.0097,\n    \"mono\": true\n  }\n}"
+      ]
+    }
+  ],
+  "links": [
+    [
+      3,
+      1,
+      0,
+      4,
+      0,
+      "STRING"
+    ],
+    [
+      10,
+      3,
+      0,
+      1,
+      1,
+      "IMAGE"
+    ],
+    [
+      12,
+      2,
+      0,
+      1,
+      0,
+      "IMAGE"
+    ]
+  ],
+  "groups": [],
+  "config": {},
+  "extra": {
+    "ds": {
+      "scale": 0.9646149645000006,
+      "offset": [
+        -530.6186075239798,
+        471.47812675129967
+      ]
+    },
+    "frontendVersion": "1.45.19"
+  },
+  "version": 0.4
+}

@@ -1,0 +1,783 @@
+{
+  "id": "9037ebfd-a43e-45b2-a1f9-aa469cb40bce",
+  "revision": 0,
+  "last_node_id": 32,
+  "last_link_id": 58,
+  "nodes": [
+    {
+      "id": 3,
+      "type": "LoadImage",
+      "pos": [
+        800,
+        -670
+      ],
+      "size": [
+        440,
+        730
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            24,
+            38,
+            39,
+            40
+          ]
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": null
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "LoadImage"
+      },
+      "widgets_values": [
+        "Plan 08_00001_1.png",
+        "image"
+      ]
+    },
+    {
+      "id": 16,
+      "type": "EmulsionGrade",
+      "pos": [
+        1300,
+        -670
+      ],
+      "size": [
+        270,
+        130
+      ],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 24
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            50
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "EmulsionGrade"
+      },
+      "widgets_values": [
+        "retro_01",
+        1,
+        315887845,
+        "fixed"
+      ]
+    },
+    {
+      "id": 24,
+      "type": "EmulsionGrade",
+      "pos": [
+        1300,
+        -470
+      ],
+      "size": [
+        270,
+        130
+      ],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 38
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            51
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "EmulsionGrade"
+      },
+      "widgets_values": [
+        "retro_02",
+        1,
+        315887845,
+        "fixed"
+      ]
+    },
+    {
+      "id": 25,
+      "type": "EmulsionGrade",
+      "pos": [
+        1300,
+        -270
+      ],
+      "size": [
+        270,
+        130
+      ],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 39
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            52
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "EmulsionGrade"
+      },
+      "widgets_values": [
+        "retro_03",
+        1,
+        315887845,
+        "fixed"
+      ]
+    },
+    {
+      "id": 26,
+      "type": "EmulsionGrade",
+      "pos": [
+        1300,
+        -70
+      ],
+      "size": [
+        270,
+        130
+      ],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 40
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            53
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "EmulsionGrade"
+      },
+      "widgets_values": [
+        "retro_04",
+        1,
+        315887845,
+        "fixed"
+      ]
+    },
+    {
+      "id": 32,
+      "type": "40054701-f1f6-4c60-b399-3375b3cd98e1",
+      "pos": [
+        1620.8782690586152,
+        -663.4390591933228
+      ],
+      "size": [
+        140.466796875,
+        86
+      ],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image1",
+          "type": "IMAGE",
+          "link": 50
+        },
+        {
+          "name": "image2",
+          "shape": 7,
+          "type": "IMAGE",
+          "link": 51
+        },
+        {
+          "label": "image3",
+          "name": "image2_1",
+          "type": "IMAGE",
+          "link": 52
+        },
+        {
+          "label": "image4",
+          "name": "image2_2",
+          "shape": 7,
+          "type": "IMAGE",
+          "link": 53
+        }
+      ],
+      "outputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "links": [
+            54
+          ]
+        }
+      ],
+      "title": "Create grid",
+      "properties": {
+        "proxyWidgets": []
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 30,
+      "type": "PreviewImage",
+      "pos": [
+        1795.7409196802378,
+        -660.9734163762095
+      ],
+      "size": [
+        913.1582314675957,
+        712.4037119030183
+      ],
+      "flags": {},
+      "order": 6,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 54
+        }
+      ],
+      "outputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "links": null
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "PreviewImage"
+      },
+      "widgets_values": []
+    }
+  ],
+  "links": [
+    [
+      24,
+      3,
+      0,
+      16,
+      0,
+      "IMAGE"
+    ],
+    [
+      38,
+      3,
+      0,
+      24,
+      0,
+      "IMAGE"
+    ],
+    [
+      39,
+      3,
+      0,
+      25,
+      0,
+      "IMAGE"
+    ],
+    [
+      40,
+      3,
+      0,
+      26,
+      0,
+      "IMAGE"
+    ],
+    [
+      50,
+      16,
+      0,
+      32,
+      0,
+      "IMAGE"
+    ],
+    [
+      51,
+      24,
+      0,
+      32,
+      1,
+      "IMAGE"
+    ],
+    [
+      52,
+      25,
+      0,
+      32,
+      2,
+      "IMAGE"
+    ],
+    [
+      53,
+      26,
+      0,
+      32,
+      3,
+      "IMAGE"
+    ],
+    [
+      54,
+      32,
+      0,
+      30,
+      0,
+      "IMAGE"
+    ]
+  ],
+  "groups": [],
+  "definitions": {
+    "subgraphs": [
+      {
+        "id": "40054701-f1f6-4c60-b399-3375b3cd98e1",
+        "version": 1,
+        "state": {
+          "lastGroupId": 0,
+          "lastNodeId": 32,
+          "lastLinkId": 58,
+          "lastRerouteId": 0
+        },
+        "revision": 0,
+        "config": {},
+        "name": "Create grid",
+        "inputNode": {
+          "id": -10,
+          "bounding": [
+            1961.2509315135671,
+            -464.1161496864612,
+            128,
+            128
+          ]
+        },
+        "outputNode": {
+          "id": -20,
+          "bounding": [
+            3180.9983165701656,
+            -327.68336946015836,
+            128,
+            68
+          ]
+        },
+        "inputs": [
+          {
+            "id": "22b33b17-086e-4b51-8d71-25c9e44cd381",
+            "name": "image1",
+            "type": "IMAGE",
+            "linkIds": [
+              41
+            ],
+            "localized_name": "image1",
+            "pos": [
+              2065.250931513567,
+              -440.1161496864612
+            ]
+          },
+          {
+            "id": "037675dd-4e3d-45ca-ba54-ba30ad664e5b",
+            "name": "image2",
+            "type": "IMAGE",
+            "linkIds": [
+              42
+            ],
+            "localized_name": "image2",
+            "shape": 7,
+            "pos": [
+              2065.250931513567,
+              -420.1161496864612
+            ]
+          },
+          {
+            "id": "ea015f3c-adfb-42e9-891e-ab66537d967b",
+            "name": "image2_1",
+            "type": "IMAGE",
+            "linkIds": [
+              56
+            ],
+            "localized_name": "image2_1",
+            "label": "image3",
+            "shape": 7,
+            "pos": [
+              2065.250931513567,
+              -400.1161496864612
+            ]
+          },
+          {
+            "id": "d8749948-87f0-456a-b39b-d5a4da978744",
+            "name": "image2_2",
+            "type": "IMAGE",
+            "linkIds": [
+              55
+            ],
+            "localized_name": "image2_2",
+            "label": "image4",
+            "shape": 7,
+            "pos": [
+              2065.250931513567,
+              -380.1161496864612
+            ]
+          }
+        ],
+        "outputs": [
+          {
+            "id": "87d685af-5c1f-4103-91cd-8076f2fdc98c",
+            "name": "images",
+            "type": "IMAGE",
+            "linkIds": [
+              49
+            ],
+            "localized_name": "images",
+            "pos": [
+              3204.9983165701656,
+              -303.68336946015836
+            ]
+          }
+        ],
+        "widgets": [],
+        "nodes": [
+          {
+            "id": 31,
+            "type": "ImagePadKJ",
+            "pos": [
+              2835.442756383244,
+              -561.4372604692844
+            ],
+            "size": [
+              270,
+              262
+            ],
+            "flags": {},
+            "order": 3,
+            "mode": 0,
+            "inputs": [
+              {
+                "localized_name": "image",
+                "name": "image",
+                "type": "IMAGE",
+                "link": 48
+              },
+              {
+                "localized_name": "mask",
+                "name": "mask",
+                "shape": 7,
+                "type": "MASK",
+                "link": null
+              },
+              {
+                "localized_name": "target_width",
+                "name": "target_width",
+                "shape": 7,
+                "type": "INT",
+                "link": null
+              },
+              {
+                "localized_name": "target_height",
+                "name": "target_height",
+                "shape": 7,
+                "type": "INT",
+                "link": null
+              }
+            ],
+            "outputs": [
+              {
+                "localized_name": "images",
+                "name": "images",
+                "type": "IMAGE",
+                "links": [
+                  49
+                ]
+              },
+              {
+                "localized_name": "masks",
+                "name": "masks",
+                "type": "MASK",
+                "links": null
+              }
+            ],
+            "properties": {
+              "Node name for S&R": "ImagePadKJ"
+            },
+            "widgets_values": [
+              40,
+              40,
+              40,
+              40,
+              0,
+              "color",
+              "255,255,255"
+            ]
+          },
+          {
+            "id": 27,
+            "type": "ImageStitch",
+            "pos": [
+              2122.9351930976377,
+              -774.1806004514824
+            ],
+            "size": [
+              270,
+              150
+            ],
+            "flags": {},
+            "order": 0,
+            "mode": 0,
+            "inputs": [
+              {
+                "localized_name": "image1",
+                "name": "image1",
+                "type": "IMAGE",
+                "link": 41
+              },
+              {
+                "localized_name": "image2",
+                "name": "image2",
+                "shape": 7,
+                "type": "IMAGE",
+                "link": 42
+              }
+            ],
+            "outputs": [
+              {
+                "localized_name": "IMAGE",
+                "name": "IMAGE",
+                "type": "IMAGE",
+                "links": [
+                  43,
+                  57
+                ]
+              }
+            ],
+            "properties": {
+              "Node name for S&R": "ImageStitch"
+            },
+            "widgets_values": [
+              "right",
+              true,
+              40,
+              "white"
+            ]
+          },
+          {
+            "id": 28,
+            "type": "ImageStitch",
+            "pos": [
+              2165.625205394533,
+              -504.09276932099067
+            ],
+            "size": [
+              270,
+              150
+            ],
+            "flags": {},
+            "order": 1,
+            "mode": 0,
+            "inputs": [
+              {
+                "localized_name": "image1",
+                "name": "image1",
+                "type": "IMAGE",
+                "link": 56
+              },
+              {
+                "localized_name": "image2",
+                "name": "image2",
+                "shape": 7,
+                "type": "IMAGE",
+                "link": 55
+              }
+            ],
+            "outputs": [
+              {
+                "localized_name": "IMAGE",
+                "name": "IMAGE",
+                "type": "IMAGE",
+                "links": [
+                  58
+                ]
+              }
+            ],
+            "properties": {
+              "Node name for S&R": "ImageStitch"
+            },
+            "widgets_values": [
+              "right",
+              true,
+              40,
+              "white"
+            ]
+          },
+          {
+            "id": 29,
+            "type": "ImageStitch",
+            "pos": [
+              2482.2627276677345,
+              -566.8705376623604
+            ],
+            "size": [
+              270,
+              150
+            ],
+            "flags": {},
+            "order": 2,
+            "mode": 0,
+            "inputs": [
+              {
+                "localized_name": "image1",
+                "name": "image1",
+                "type": "IMAGE",
+                "link": 57
+              },
+              {
+                "localized_name": "image2",
+                "name": "image2",
+                "shape": 7,
+                "type": "IMAGE",
+                "link": 58
+              }
+            ],
+            "outputs": [
+              {
+                "localized_name": "IMAGE",
+                "name": "IMAGE",
+                "type": "IMAGE",
+                "links": [
+                  48
+                ]
+              }
+            ],
+            "properties": {
+              "Node name for S&R": "ImageStitch"
+            },
+            "widgets_values": [
+              "down",
+              true,
+              40,
+              "white"
+            ]
+          }
+        ],
+        "groups": [],
+        "links": [
+          {
+            "id": 48,
+            "origin_id": 29,
+            "origin_slot": 0,
+            "target_id": 31,
+            "target_slot": 0,
+            "type": "IMAGE"
+          },
+          {
+            "id": 41,
+            "origin_id": -10,
+            "origin_slot": 0,
+            "target_id": 27,
+            "target_slot": 0,
+            "type": "IMAGE"
+          },
+          {
+            "id": 42,
+            "origin_id": -10,
+            "origin_slot": 1,
+            "target_id": 27,
+            "target_slot": 1,
+            "type": "IMAGE"
+          },
+          {
+            "id": 49,
+            "origin_id": 31,
+            "origin_slot": 0,
+            "target_id": -20,
+            "target_slot": 0,
+            "type": "IMAGE"
+          },
+          {
+            "id": 55,
+            "origin_id": -10,
+            "origin_slot": 3,
+            "target_id": 28,
+            "target_slot": 1,
+            "type": "IMAGE"
+          },
+          {
+            "id": 56,
+            "origin_id": -10,
+            "origin_slot": 2,
+            "target_id": 28,
+            "target_slot": 0,
+            "type": "IMAGE"
+          },
+          {
+            "id": 57,
+            "origin_id": 27,
+            "origin_slot": 0,
+            "target_id": 29,
+            "target_slot": 0,
+            "type": "IMAGE"
+          },
+          {
+            "id": 58,
+            "origin_id": 28,
+            "origin_slot": 0,
+            "target_id": 29,
+            "target_slot": 1,
+            "type": "IMAGE"
+          }
+        ],
+        "extra": {}
+      }
+    ]
+  },
+  "config": {},
+  "extra": {
+    "ds": {
+      "scale": 0.7972024500000032,
+      "offset": [
+        -472.11815897792246,
+        937.3068533984929
+      ]
+    },
+    "frontendVersion": "1.45.19"
+  },
+  "version": 0.4
+}

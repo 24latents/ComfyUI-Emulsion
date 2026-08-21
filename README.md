@@ -10,6 +10,8 @@ JSON-preset color grading, Lightroom-preset style. Two nodes under
   the grading parameters by optimization and writes a JSON preset reusable by
   Emulsion Grade.
 
+![One image graded with four presets](example_workflows/emulsion_grade.png)
+
 ## Installation
 
 ```
@@ -50,6 +52,20 @@ linear interpolation between the 6 points (differentiable); at render time,
 `grading.py` applies a Catmull-Rom spline through those same points. This
 controlled linear-fit / spline-render gap is on the order of the fit noise
 (the reported RMSE is measured on the spline render, at native resolution).
+
+## Example workflows
+
+Two ready-to-use workflows ship in [example_workflows/](example_workflows) —
+they also show up in ComfyUI's template browser (Workflow → Browse Templates
+→ ComfyUI-Emulsion):
+
+- [emulsion_grade.json](example_workflows/emulsion_grade.json) — one image
+  graded with four presets side by side (screenshot above).
+- [emulsion_extract.json](example_workflows/emulsion_extract.json) — extracts
+  a preset from a before/after pair; load your own two images into the
+  LoadImage nodes. The `Display Any` node (from
+  [rgthree-comfy](https://github.com/rgthree/rgthree-comfy)) only shows the
+  returned JSON and can be removed if you don't have it installed.
 
 ## Preset format
 
