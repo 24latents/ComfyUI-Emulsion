@@ -39,7 +39,19 @@ the image passes through unchanged (the workflow never crashes).
 Connect `image_source` (ungraded) and `image_target` (the same image, graded);
 the node fits by gradient descent (Adam, pure torch, CPU or GPU) a 6-point
 tone curve, temperature/tint, saturation and an optional vignette, then
-estimates grain from the residual high-frequency noise. The preset is written
+estimates grain from the residual high-frequency noise.
+
+- **preset_name** — the `"name"` stored in the JSON; the file itself is
+  written under a slugified version of it (`My Look!` → `my_look.json`).
+- **iterations** — optimization budget (default 400). More iterations =
+  tighter fit but slower. The fit stops early on its own once the error
+  stops improving for 50 iterations, so high values only cost time when
+  they actually help: ~100 for a quick draft, 400 for most grades,
+  800-2000 for stubborn ones. The console shows the final RMSE and the
+  number of iterations actually run.
+- **fit_vignette** — also fit a vignette (amount, radius, feather). Turn it
+  off when the pair has no vignette, so the optimizer cannot abuse it to
+  compensate for other differences (e.g. a naturally darker corner). The preset is written
 to `presets/<slugified_name>.json` (with a `_2`, `_3`… suffix on collision)
 and returned as a STRING; it shows up in the Emulsion Grade dropdown on
 browser refresh. The JSON only contains the significantly non-neutral
